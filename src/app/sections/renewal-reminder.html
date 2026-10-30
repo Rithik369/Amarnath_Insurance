@@ -1,0 +1,49 @@
+<section id="reminder" class="section">
+  <div class="container">
+    <div class="reminder" reveal>
+      <div class="r-text">
+        <span class="chip chip-light">⏰ Renewal reminder</span>
+        <h2>Never miss a renewal again</h2>
+        <p>
+          A lapsed policy can mean losing your no-claim bonus or waiting periods. Set a reminder in
+          seconds and we'll help you renew on time.
+        </p>
+        <ul>
+          <li>✔ Calendar alert 7 days before the due date</li>
+          <li>✔ Or let us remind you on WhatsApp</li>
+        </ul>
+      </div>
+
+      <div class="card r-form">
+        <label class="label">Policy type</label>
+        <div class="seg seg-3">
+          @for (t of types; track t) {
+            <button [class.active]="type() === t" (click)="type.set(t)">{{ t }}</button>
+          }
+        </div>
+
+        <label class="label" for="r-name">Your name</label>
+        <input id="r-name" class="input" type="text" placeholder="e.g. Ramesh" autocomplete="name"
+          [value]="name()" (input)="name.set($any($event.target).value)" />
+
+        <label class="label" for="r-date">Renewal / expiry date</label>
+        <input id="r-date" class="input" type="date" [min]="today"
+          [value]="date()" (input)="date.set($any($event.target).value)" />
+
+        @if (daysLeft() !== null && daysLeft()! >= 0) {
+          <p class="days" [class.urgent]="daysLeft()! <= 15">
+            {{ daysLeft() === 0 ? 'Due today!' : daysLeft() + ' day' + (daysLeft() === 1 ? '' : 's') + ' left' }}
+          </p>
+        }
+        @if (error()) {
+          <p class="error">{{ error() }}</p>
+        }
+
+        <div class="r-actions">
+          <button class="btn btn-primary" (click)="addToCalendar()">📅 Add to my calendar</button>
+          <button class="btn btn-wa" (click)="remindOnWhatsApp()">💬 Remind me on WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+<section id="claims" class="section section-soft">
+  <div class="container narrow">
+    <div class="section-head" reveal>
+      <span class="chip">📋 Claim helper</span>
+      <h2>Claim document checklist</h2>
+      <p class="muted">Tick what you have. We'll help with the rest.</p>
+    </div>
+
+    <div class="card checklist" reveal>
+      <div class="tabs">
+        @for (t of types; track t) {
+          <button class="tab" [class.active]="type() === t" (click)="type.set(t)">{{ t }}</button>
+        }
+      </div>
+
+      <div class="progress-row">
+        <span><b>{{ done() }}</b> of {{ docs().length }} ready</span>
+        @if (done() > 0) {
+          <button class="link-btn" (click)="reset()">Clear</button>
+        }
+      </div>
+      <div class="bar"><div class="bar-fill" [style.width.%]="percent()"></div></div>
+
+      <ul class="docs">
+        @for (d of docs(); track d) {
+          <li>
+            <label [class.done]="checked().has(key(d))">
+              <input type="checkbox" [checked]="checked().has(key(d))" (change)="toggle(d)" />
+              <span class="box">✓</span>
+              {{ d }}
+            </label>
+          </li>
+        }
+      </ul>
+
+      @if (percent() === 100) {
+        <p class="ready">🎉 All set! You're ready to file your claim.</p>
+      }
+      <button class="btn btn-primary btn-block" (click)="askHelp()">💬 Get claim help on WhatsApp</button>
+    </div>
+  </div>
+</section>

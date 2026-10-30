@@ -1,0 +1,125 @@
+.calc {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  max-width: 940px;
+  margin: 0 auto;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 20px 50px var(--shadow);
+}
+.calc-inputs {
+  padding: 32px;
+  min-width: 0;
+}
+.seg {
+  margin-bottom: 22px;
+}
+.field {
+  margin-bottom: 22px;
+}
+.field-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.field-top label {
+  font-weight: 600;
+  color: var(--muted);
+}
+.field-top b {
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.stepper button {
+  width: 48px;
+  height: 46px;
+  border: 0;
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+.stepper button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.stepper span {
+  width: 56px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+.pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pills button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.pills button.active {
+  border-color: var(--brand);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.calc-result {
+  padding: 36px 32px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 80% 10%, rgb(255 255 255 / 0.18), transparent 45%),
+    linear-gradient(150deg, #4f46e5, #2563eb 55%, #0891b2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.r-label {
+  margin: 0;
+  opacity: 0.85;
+  font-weight: 600;
+}
+.r-value {
+  margin: 6px 0 10px;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  animation: bump 0.35s ease;
+}
+@keyframes bump {
+  from {
+    transform: scale(0.85);
+    opacity: 0.4;
+  }
+}
+.r-note {
+  margin: 0 0 24px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+@media (max-width: 760px) {
+  .calc {
+    grid-template-columns: 1fr;
+  }
+  .calc-inputs,
+  .calc-result {
+    padding: 24px;
+  }
+}
