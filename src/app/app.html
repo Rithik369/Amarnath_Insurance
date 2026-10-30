@@ -1,0 +1,256 @@
+<div class="progress" [style.width.%]="progress()"></div>
+
+<header class="nav-wrap" [class.scrolled]="scrolled()">
+  <div class="container nav-inner">
+    <a href="#top" class="brand" (click)="closeMenu()">
+      <img src="rml-logo.svg" alt="" width="44" height="44" />
+      <span>
+        <strong><span class="grad">RML</span> Insurances</strong>
+        <small>{{ site.tagline }}</small>
+      </span>
+    </a>
+
+    <nav class="nav" [class.open]="menuOpen()">
+      <a href="#services" (click)="closeMenu()">Insurance</a>
+      <a href="#calculator" (click)="closeMenu()">Calculator</a>
+      <a href="#review" (click)="closeMenu()">Free Review</a>
+      <a href="#claims" (click)="closeMenu()">Claims</a>
+      <a href="#contact" (click)="closeMenu()">Contact</a>
+      <a class="btn btn-primary btn-sm" [href]="'tel:+91' + site.phones[0]">📞 Call Now</a>
+    </nav>
+
+    <div class="nav-tools">
+      <button class="icon-btn" (click)="toggleTheme()" [attr.aria-label]="theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+        {{ theme() === 'dark' ? '☀️' : '🌙' }}
+      </button>
+      <button class="menu-btn" (click)="toggleMenu()" [class.open]="menuOpen()" [attr.aria-expanded]="menuOpen()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero + quick quote -->
+  <section class="hero">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="container hero-grid">
+      <div class="hero-text" reveal>
+        <span class="chip">✨ Free, honest advice</span>
+        <h1>Insurance made <span class="grad-text">simple</span>.</h1>
+        <p class="lead">
+          Health, Term Life and Motor insurance from trusted insurers, explained clearly by
+          {{ site.advisor }}. No jargon. No pressure.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" [href]="'tel:+91' + site.phones[0]">📞 {{ formatPhone(site.phones[0]) }}</a>
+          <a class="btn btn-wa" [href]="generalWa" target="_blank" rel="noopener">💬 WhatsApp</a>
+        </div>
+        <ul class="trust">
+          <li>✔ No selling</li>
+          <li>✔ No pressure</li>
+          <li>✔ No charges</li>
+        </ul>
+      </div>
+
+      <form class="quote card" (submit)="sendQuote($event)" novalidate reveal>
+        <h2>Get a free quote</h2>
+        <p class="muted">Takes 10 seconds. We reply on WhatsApp.</p>
+
+        <span class="label">I need</span>
+        <div class="options">
+          @for (s of services; track s.type) {
+            <button type="button" class="option" [class.active]="quoteType() === s.type" (click)="quoteType.set(s.type)">
+              <span class="opt-icon">{{ s.icon }}</span>
+              {{ s.type }}
+            </button>
+          }
+        </div>
+
+        <label class="label" for="qname">Your name</label>
+        <input id="qname" class="input" type="text" placeholder="e.g. Ramesh" autocomplete="name"
+          [value]="quoteName()" [class.invalid]="quoteError()"
+          (input)="quoteName.set($any($event.target).value); quoteError.set(false)" />
+        @if (quoteError()) {
+          <p class="error">Please enter your name.</p>
+        }
+
+        <button type="submit" class="btn btn-primary btn-block send">Send on WhatsApp →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Partners marquee -->
+  <div class="marquee" aria-label="Our insurance partners">
+    <div class="marquee-track">
+      @for (p of partners; track $index) {
+        <span>🤝 {{ p }}</span>
+      }
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <section class="stats container">
+    @for (s of stats; track s.label) {
+      <div class="stat" reveal>
+        <b>{{ s.prefix ?? '' }}<span [countUp]="s.value"></span>{{ s.suffix }}</b>
+        <span>{{ s.label }}</span>
+      </div>
+    }
+  </section>
+
+  <!-- Services tabs -->
+  <section id="services" class="section">
+    <div class="container">
+      <div class="section-head" reveal>
+        <span class="chip">🧩 Our plans</span>
+        <h2>What we cover</h2>
+        <p class="muted">Tap a type to see how we can help.</p>
+      </div>
+
+      <div class="tabs service-tabs" role="tablist" reveal>
+        @for (s of services; track s.type) {
+          <button role="tab" class="tab" [class.active]="activeTab() === s.type"
+            [attr.aria-selected]="activeTab() === s.type" (click)="activeTab.set(s.type)">
+            {{ s.icon }} {{ s.type }}
+          </button>
+        }
+      </div>
+
+      @for (s of [activeService()]; track s.type) {
+        <div class="panel card" role="tabpanel">
+          <div class="panel-icon">{{ s.icon }}</div>
+          <div class="panel-body">
+            <p class="partner">Partner: {{ s.partner }}</p>
+            <h3>{{ s.headline }}</h3>
+            <ul class="checks">
+              @for (p of s.points; track p) {
+                <li>{{ p }}</li>
+              }
+            </ul>
+            <button class="btn btn-outline" (click)="askAbout(s.type)">Get a {{ s.type }} quote</button>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <app-cover-calculator />
+
+  <!-- Free policy review -->
+  <section id="review" class="section section-soft">
+    <div class="container review">
+      <div reveal>
+        <span class="chip">🎁 Complimentary service</span>
+        <h2>Already have a policy?</h2>
+        <p class="lead-dark">
+          You are under <b>no obligation</b> to buy another. We'll simply help you understand the one you have.
+        </p>
+        <a class="btn btn-wa" [href]="reviewWa" target="_blank" rel="noopener">💬 Get a free review</a>
+      </div>
+
+      <div class="card toggle-card" reveal>
+        <div class="seg">
+          <button [class.active]="reviewView() === 'covers'" (click)="reviewView.set('covers')">What it covers</button>
+          <button [class.active]="reviewView() === 'excludes'" (click)="reviewView.set('excludes')">What it doesn't</button>
+        </div>
+        @if (reviewView() === 'covers') {
+          <div class="toggle-body good">
+            <span class="big">✅</span>
+            <p>The illnesses, treatments and expenses your policy <b>will pay for</b>.</p>
+          </div>
+        } @else {
+          <div class="toggle-body warn">
+            <span class="big">⚠️</span>
+            <p>The waiting periods, exclusions and limits that may <b>reduce or reject</b> a claim.</p>
+          </div>
+        }
+        <p class="note">First, understand your policy.</p>
+      </div>
+    </div>
+  </section>
+
+  <app-renewal-reminder />
+
+  <app-claim-checklist />
+
+  <!-- Steps -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head" reveal>
+        <span class="chip">🚀 Easy start</span>
+        <h2>How it works</h2>
+      </div>
+      <div class="steps">
+        @for (st of steps; track st.title; let i = $index) {
+          <div class="step card" reveal [style.transition-delay.ms]="i * 120">
+            <div class="step-icon">{{ st.icon }}</div>
+            <span class="step-num">Step {{ i + 1 }}</span>
+            <h3>{{ st.title }}</h3>
+            <p class="muted">{{ st.text }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section section-soft">
+    <div class="container narrow">
+      <div class="section-head" reveal>
+        <span class="chip">❓ FAQ</span>
+        <h2>Questions? We've got answers</h2>
+      </div>
+      @for (f of faqs; track f.q; let i = $index) {
+        <div class="faq" [class.open]="openFaq() === i" reveal>
+          <button class="faq-q" (click)="toggleFaq(i)" [attr.aria-expanded]="openFaq() === i">
+            {{ f.q }}
+            <span class="plus">+</span>
+          </button>
+          <div class="faq-a"><p>{{ f.a }}</p></div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container contact" reveal>
+      <div class="section-head">
+        <span class="chip">📬 Contact</span>
+        <h2>Talk to us</h2>
+        <p class="muted">Call, WhatsApp or email. Advice is always free.</p>
+      </div>
+      <div class="contact-cards">
+        @for (p of site.phones; track p) {
+          <a class="c-card" [href]="'tel:+91' + p"><span>📞</span><div><small>Call</small>{{ formatPhone(p) }}</div></a>
+        }
+        <a class="c-card" [href]="generalWa" target="_blank" rel="noopener"><span>💬</span><div><small>WhatsApp</small>Chat now</div></a>
+        <a class="c-card" [href]="'mailto:' + site.email"><span>✉️</span><div><small>Email</small>{{ site.email }}</div></a>
+        <a class="c-card" [href]="site.mapLink" target="_blank" rel="noopener"><span>📍</span><div><small>Visit us</small>Get directions</div></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="f-brand">
+      <img src="rml-logo.svg" alt="" width="36" height="36" />
+      <strong>RML Insurances</strong>
+    </div>
+    <p><b>Health:</b> HDFC ERGO · <b>Term:</b> Axis Max Life &amp; HDFC Life · <b>Motor:</b> New India Assurance</p>
+    <p>© {{ year }} {{ site.name }}. All rights reserved.</p>
+    <p class="small">Insurance is the subject matter of solicitation. Please read policy documents carefully before buying.</p>
+  </div>
+</footer>
+
+@if (showTop()) {
+  <button class="to-top" (click)="toTop()" aria-label="Back to top">↑</button>
+}
+<a class="wa-float" [href]="generalWa" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+
+@if (toast.message(); as msg) {
+  <div class="toast" role="status">{{ msg }}</div>
+}
