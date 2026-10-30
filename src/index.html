@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>RML Insurances | Health, Term Life &amp; Motor Insurance Advisory</title>
+    <meta
+      name="description"
+      content="RML Insurances - trusted insurance advisory for Health (HDFC ERGO), Term Life (Axis Max Life, HDFC Life) and Motor (New India Assurance). Free policy review. Call 94426 44761."
+    />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="icon" type="image/svg+xml" href="rml-logo.svg" />
+    <link rel="apple-touch-icon" href="rml-logo.svg" />
+    <script>
+      // Apply the saved (or system) colour theme before the page paints.
+      try {
+        var t = localStorage.getItem('rml-theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>
